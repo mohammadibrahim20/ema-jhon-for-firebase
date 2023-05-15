@@ -1,20 +1,35 @@
-import React from 'react';
-import './Header.css';
-import logo from '../../images/Logo.svg';
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import logo from "../../images/Logo.svg";
+import { AuthContext } from "../Providers/AuthProviders";
+import "./Header.css";
 
 const Header = () => {
-    return (
-        <nav className='header'>
-            <img src={logo} alt="" />
-            <div>
-                <Link to="/">Shop</Link>
-                <Link to="/orders">Orders</Link>
-                <Link to="/inventory">Inventory</Link>
-                <Link to="/login">Login</Link>
-            </div>
-        </nav>
-    );
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut().then((result) => {})
+    .then(error=> console.log(error))
+  };
+
+  return (
+    <nav className="header">
+      <img src={logo} alt="" />
+      <div>
+        <Link to="/">Shop</Link>
+        <Link to="/orders">Orders</Link>
+        <Link to="/inventory">Inventory</Link>
+        <Link to="/login">Login</Link>
+        <Link to="/signup">Sing Up</Link>
+        {user && (
+          <span className="text-white" >
+            Welcome {user.email}{" "}
+            <button onClick={handleLogOut}>Sign Out</button>{" "}
+          </span>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Header;
